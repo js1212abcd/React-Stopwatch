@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>JS Bin</title>
+  </head>
+  <body>
+    <script src="https://fb.me/react-0.13.3.js"></script>
+
+    <script id="jsbin-javascript">
+      var Stopwatch = React.createClass({
+        getInitialState: function () {
+          return { secondsElapsed: 2 };
+        },
+
+        getSeconds: function () {
+          return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
+        },
+
+        getMinutes: function () {
+          return Math.floor(this.state.secondsElapsed / 60);
+        },
+        getHours: function () {
+          return Math.floor("0" + this.state.secondsElapsed / 3600);
+        },
+
+        handleStartClick: function () {
+          var _this = this;
+
+          this.incrementer = setInterval(function () {
+            _this.setState({
+              secondsElapsed: _this.state.secondsElapsed + 1,
+            });
+          }, 1000);
+        },
+
+        handleWaitClick: function () {
+          // останавливаю счетчик
+          clearInterval(this.incrementer);
+        },
+
+        handleStopClick: function () {
+          // обнуляю счетчик
+          this.setState({
+            secondsElapsed: 0,
+          });
+
+          // правильнее использовать здесь "handleWaitClick"
+          // останавливаю счетчик
+          clearInterval(this.incrementer);
+        },
+
+        handleResetClick: function () {
+          // правильнее использовать здесь "handleStopClick"
+          // останавливаю счетчик
+          clearInterval(this.incrementer);
+
+          // обнуляю счетчик
+          this.setState({
+            secondsElapsed: 0,
+          });
+
+          // запускаю счетчик
+          var _this = this;
+
+          this.incrementer = setInterval(function () {
+            _this.setState({
+              secondsElapsed: _this.state.secondsElapsed + 1,
+            });
+          }, 1000);
+        },
+
+        render: function () {
+          return (
+            <div>
+              <h1>
+                {this.getHours()}:{this.getMinutes()}:{this.getSeconds()}
+              </h1>
+
+              <button type="button" onClick={this.handleStartClick}>
+                start
+              </button>
+
+              <button type="button" onClick={this.handleStopClick}>
+                stop
+              </button>
+
+              <button type="button" onDoubleClick={this.handleWaitClick}>
+                wait
+              </button>
+
+              <button type="button" onClick={this.handleResetClick}>
+                reset
+              </button>
+            </div>
+          );
+        },
+      });
+
+      React.render(<Stopwatch />, document.body);
+    </script>
+  </body>
+</html>
